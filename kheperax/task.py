@@ -3,17 +3,16 @@ from __future__ import annotations
 import dataclasses
 from typing import List, Tuple, Dict, Any
 
-import brax.envs
+from brax.envs import Env, training
 import flax.struct
 import jax.numpy as jnp
 import jax.tree_util
-from jax import numpy as jnp
 from qdax.core.neuroevolution.networks.networks import MLP
 from qdax.environments.bd_extractors import (
     get_final_xy_position,
 )
 from qdax.tasks.brax_envs import create_brax_scoring_fn
-from qdax.types import RNGKey
+from qdax.custom_types import RNGKey
 
 from kheperax.maze import Maze
 from kheperax.rendering_tools import RenderingTools
@@ -59,10 +58,10 @@ class KheperaxState:
     info: Dict[str, Any] = flax.struct.field(default_factory=dict)
 
 
-class KheperaxTask(brax.envs.env.Env):
+class KheperaxTask(Env):
     def __init__(self, kheperax_config: KheperaxConfig, **kwargs):
         self.kheperax_config = kheperax_config
-        super().__init__(None, **kwargs)
+        super().__init__(**kwargs)
 
     @classmethod
     def create_default_task(cls,
@@ -70,7 +69,7 @@ class KheperaxTask(brax.envs.env.Env):
                             random_key,
                             ):
         env = cls(kheperax_config)
-        env = brax.envs.wrappers.EpisodeWrapper(env, kheperax_config.episode_length, action_repeat=1)
+        env = training.EpisodeWrapper(env, kheperax_config.episode_length, action_repeat=1)
         env = TypeFixerWrapper(env)
 
         # Init policy network
