@@ -1,0 +1,68 @@
+[tool.poetry]
+
+name = "kheperax"
+version = "0.1.0"
+description = "High-performance JAX-powered simulator for robotic navigation in 2D mazes, optimized for Quality-Diversity algorithm research and benchmarking."
+authors = ["Luca Grillotti <lucagrillotti16@imperial.ac.uk>"]
+
+packages = [
+
+    { include = "kheperax" }
+]
+
+[build-system]
+
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+
+python = ">=3.11"
+brax = "*"
+flax = "*"
+jax = "*"
+jaxlib = "*"
+qdax = "*"
+mujoco-mjx = "*"
+
+[tool.ruff]
+
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+line-length = 80
+indent-width = 4
+
+target-version = "py311"
+
+[tool.ruff.lint.per-file-ignores]
+
+"__init__.py" = ["E402", "F401"]
+"**/test/*" = ["ARG001", "D"]
+"**/examples/*" = ["D"]
